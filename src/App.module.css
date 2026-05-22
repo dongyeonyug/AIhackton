@@ -1,0 +1,575 @@
+:global(:root) {
+  --ink: #172026;
+  --muted: #66737f;
+  --line: #d8e0e6;
+  --paper: #f7faf8;
+  --panel: #ffffff;
+  --green: #2f7d57;
+  --teal: #187783;
+  --coral: #d55f4d;
+  --gold: #c88b24;
+  --blue: #3868b0;
+  --shadow: 0 18px 45px rgba(32, 48, 56, 0.1);
+}
+
+:global(*) {
+  box-sizing: border-box;
+}
+
+:global(body) {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Inter, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+}
+
+:global(button),
+:global(input),
+:global(select),
+:global(textarea) {
+  font: inherit;
+}
+
+:global(button) {
+  min-height: 42px;
+  border: 0;
+  border-radius: 8px;
+  padding: 0 14px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+}
+
+.sidebar {
+  border-right: 1px solid var(--line);
+  background: #fff;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.brand-mark,
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: #fff;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.avatar {
+  background: #eaf4ee;
+  color: var(--green);
+}
+
+.brand strong,
+.brand small {
+  display: block;
+}
+
+.brand small,
+.muted,
+.trust-panel p,
+:global(small) {
+  color: var(--muted);
+}
+
+.nav-tabs {
+  display: grid;
+  gap: 8px;
+}
+
+.nav-tabs button {
+  background: transparent;
+  color: var(--muted);
+  text-align: left;
+}
+
+.nav-tabs button.active {
+  background: #eaf4ee;
+  color: var(--green);
+}
+
+.trust-panel,
+.panel,
+.summary-grid article,
+.professor-card,
+.assignment-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.trust-panel {
+  margin-top: auto;
+  padding: 18px;
+}
+
+.trust-copy,
+.topbar,
+.panel-heading,
+.assignment-top,
+.assignment-actions,
+.speaker-row,
+.modal header,
+.modal menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.trust-copy strong {
+  font-size: 34px;
+}
+
+.trust-meter {
+  height: 10px;
+  margin: 12px 0;
+  background: #e4ece8;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.trust-meter span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--coral), var(--gold), var(--green));
+}
+
+:global(main) {
+  padding: 28px;
+  overflow: auto;
+}
+
+.topbar {
+  margin-bottom: 24px;
+}
+
+.topbar p,
+.topbar h1 {
+  margin: 0;
+}
+
+.topbar p {
+  color: var(--teal);
+  font-weight: 900;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.summary-grid article,
+.panel,
+.professor-card,
+.assignment-card {
+  padding: 18px;
+}
+
+.summary-grid span,
+.summary-grid small {
+  display: block;
+}
+
+.summary-grid strong {
+  display: block;
+  margin: 8px 0 3px;
+  font-size: 30px;
+}
+
+.main-grid,
+.exam-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.8fr);
+  gap: 18px;
+}
+
+.panel {
+  margin-bottom: 18px;
+}
+
+.panel-heading {
+  margin-bottom: 14px;
+}
+
+.panel-heading h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.text-button,
+.secondary,
+.filters button {
+  background: #edf2f4;
+  color: var(--ink);
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+}
+
+.filters button.active {
+  background: var(--teal);
+  color: #fff;
+}
+
+.assignment-list,
+.professor-grid,
+.exam-output {
+  display: grid;
+  gap: 12px;
+}
+
+.professor-grid {
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+}
+
+.professor-grid.compact {
+  grid-template-columns: 1fr;
+}
+
+.professor-card {
+  min-height: 170px;
+  display: grid;
+  gap: 10px;
+  text-align: left;
+  color: var(--ink);
+}
+
+.professor-card.empty {
+  border-style: dashed;
+  place-items: center;
+  text-align: center;
+  color: var(--muted);
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag,
+.d-day {
+  border-radius: 999px;
+  padding: 5px 9px;
+  background: #edf2f4;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.d-day.urgent {
+  background: #fff0ea;
+  color: var(--coral);
+}
+
+.play-hint,
+.assignment-actions a {
+  color: var(--blue);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.assignment-card {
+  display: grid;
+  gap: 10px;
+}
+
+.assignment-card h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.assignment-actions label {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.sim-stage {
+  min-height: calc(100vh - 132px);
+  display: grid;
+  grid-template-rows: minmax(360px, 1fr) auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #dfeceb;
+  box-shadow: var(--shadow);
+}
+
+.sim-background {
+  position: relative;
+  display: grid;
+  place-items: end center;
+  min-height: 420px;
+  background: linear-gradient(115deg, #dce9e1 0 45%, #c5d9df 45% 70%, #e8e4d4 70%);
+}
+
+.sim-background::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26%;
+  background: #b9a983;
+}
+
+.office-board {
+  position: absolute;
+  top: 34px;
+  left: 34px;
+  width: min(320px, 44vw);
+  min-height: 150px;
+  border: 10px solid #725b3f;
+  border-radius: 8px;
+  background: #24483a;
+  color: #edf7ea;
+  padding: 20px;
+  display: grid;
+  gap: 10px;
+  font-weight: 900;
+}
+
+.professor-standee {
+  position: relative;
+  z-index: 1;
+  width: min(280px, 42vw);
+  height: min(430px, 58vh);
+  margin-bottom: -5px;
+  border-radius: 120px 120px 24px 24px;
+  background: linear-gradient(180deg, #f7f4e9 0 28%, var(--green) 28% 100%);
+  display: grid;
+  place-items: start center;
+  padding-top: 70px;
+  box-shadow: 0 20px 40px rgba(23, 32, 38, 0.22);
+}
+
+.professor-standee::before {
+  content: "";
+  position: absolute;
+  top: 24px;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  background: #f2d0b8;
+  border: 8px solid rgba(255, 255, 255, 0.7);
+}
+
+.professor-standee span {
+  position: relative;
+  z-index: 2;
+  margin-top: -42px;
+  font-size: 44px;
+  font-weight: 900;
+}
+
+.professor-standee[data-personality="츤데레"] {
+  background: linear-gradient(180deg, #f7f4e9 0 28%, #b64e5c 28% 100%);
+}
+
+.professor-standee[data-personality="연구자"] {
+  background: linear-gradient(180deg, #f7f4e9 0 28%, #4d6072 28% 100%);
+}
+
+.professor-standee[data-personality="열정형"] {
+  background: linear-gradient(180deg, #f7f4e9 0 28%, #d06d36 28% 100%);
+}
+
+.professor-standee[data-personality="방임형"] {
+  background: linear-gradient(180deg, #f7f4e9 0 28%, #7a725f 28% 100%);
+}
+
+.dialogue-box {
+  z-index: 2;
+  margin: -74px 24px 24px;
+  padding: 22px;
+  border-radius: 8px;
+  background: rgba(23, 32, 38, 0.92);
+  color: #fff;
+  box-shadow: 0 20px 45px rgba(23, 32, 38, 0.28);
+}
+
+.speaker-row span,
+.chat-panel small,
+.chat-message span {
+  color: #b9ece5;
+  font-weight: 800;
+}
+
+.choice-grid,
+.chat-form,
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.choice-grid button {
+  min-height: 54px;
+  background: #f5fbfa;
+  color: var(--ink);
+  border: 1px solid #b9ece5;
+}
+
+.chat-panel {
+  margin-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  padding-top: 16px;
+}
+
+.chat-log {
+  max-height: 240px;
+  overflow: auto;
+  display: grid;
+  gap: 10px;
+}
+
+.chat-message {
+  width: min(86%, 720px);
+  padding: 11px 13px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.chat-message.user {
+  justify-self: end;
+  background: #f5fbfa;
+  color: var(--ink);
+}
+
+.chat-message p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.chat-form {
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin-top: 12px;
+}
+
+.drop-zone {
+  min-height: 120px;
+  border: 1px dashed var(--teal);
+  border-radius: 8px;
+  background: #f3fbfb;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 18px;
+  margin-bottom: 12px;
+  color: var(--teal);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.drop-zone input {
+  display: none;
+}
+
+:global(textarea),
+:global(input),
+:global(select) {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 11px 12px;
+  background: #fff;
+  color: var(--ink);
+}
+
+:global(textarea) {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.question-block {
+  border-left: 4px solid var(--teal);
+  background: #f8fbfb;
+  padding: 14px;
+  border-radius: 0 8px 8px 0;
+  white-space: pre-wrap;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(23, 32, 38, 0.42);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  z-index: 10;
+}
+
+.modal {
+  width: min(620px, 100%);
+  border-radius: 8px;
+  background: #fff;
+  padding: 20px;
+  display: grid;
+  gap: 14px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.22);
+}
+
+.modal h2 {
+  margin: 0;
+}
+
+.modal menu {
+  margin: 0;
+  padding: 0;
+}
+
+.empty-state {
+  min-height: 420px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 16px;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+@media (max-width: 900px) {
+  .app-shell,
+  .summary-grid,
+  .main-grid,
+  .exam-layout,
+  .choice-grid,
+  .chat-form,
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
