@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" role="img" aria-labelledby="title desc">
+  <title id="title">교수님이 나만 편애한다</title>
+  <desc id="desc">검은 배경 위에 분홍색과 흰색으로 장식한 한국어 타이틀 로고</desc>
+  <defs>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.52 0 0 0 0 0.64 0 0 0 0 1 0 0 0 .85 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softWhite" x="-10%" y="-30%" width="120%" height="160%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <linearGradient id="pinkEdge" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff6ec3"/>
+      <stop offset="52%" stop-color="#ff93d4"/>
+      <stop offset="100%" stop-color="#ff4eaa"/>
+    </linearGradient>
+  </defs>
+  <rect width="1536" height="1024" fill="#020202"/>
+  <g opacity=".92" filter="url(#softWhite)">
+    <path d="M420 320 C590 252 810 304 965 220 C1062 167 1164 172 1224 246 C1094 312 1010 426 1090 540 C944 596 772 542 628 622 C484 702 336 666 264 562 C384 506 472 430 420 320Z" fill="#eef5ff"/>
+    <path d="M560 760 C708 692 902 718 1050 644 C1132 602 1248 640 1302 718 C1164 802 1026 852 858 830 C708 810 590 848 448 872 C372 884 308 856 278 810 C368 806 470 802 560 760Z" fill="#eef5ff"/>
+  </g>
+  <g filter="url(#glow)" text-anchor="middle" font-family="'Black Han Sans', 'Noto Serif KR', 'Apple SD Gothic Neo', serif" font-weight="900">
+    <text x="770" y="292" font-size="174" fill="#97b5ff" stroke="#97b5ff" stroke-width="28" paint-order="stroke fill">교수님이</text>
+    <text x="770" y="292" font-size="174" fill="#fff7fb" stroke="url(#pinkEdge)" stroke-width="16" paint-order="stroke fill">교수님이</text>
+    <text x="780" y="540" font-size="188" fill="#97b5ff" stroke="#97b5ff" stroke-width="28" paint-order="stroke fill">나만</text>
+    <text x="780" y="540" font-size="188" fill="#fff7fb" stroke="url(#pinkEdge)" stroke-width="16" paint-order="stroke fill">나만</text>
+    <text x="770" y="806" font-size="206" fill="#97b5ff" stroke="#97b5ff" stroke-width="30" paint-order="stroke fill">편애한다</text>
+    <text x="770" y="806" font-size="206" fill="#fff7fb" stroke="url(#pinkEdge)" stroke-width="18" paint-order="stroke fill">편애한다</text>
+  </g>
+  <g fill="#fff7fb" stroke="#ff72c4" stroke-width="6" opacity=".96">
+    <path d="M270 514 C220 478 236 414 290 446 C298 390 376 390 366 452 C410 438 430 494 384 524 L306 576Z"/>
+    <path d="M1234 296 C1194 270 1202 216 1248 240 C1255 194 1320 196 1312 248 C1348 240 1368 288 1328 314 L1264 356Z"/>
+    <path d="M1280 640 C1248 618 1256 574 1292 592 C1300 552 1354 558 1342 602 C1376 596 1390 634 1358 658 L1306 692Z"/>
+    <path d="M302 654 C272 634 278 596 312 612 C318 574 368 580 356 618 C388 612 402 648 372 668 L328 696Z"/>
+  </g>
+</svg>

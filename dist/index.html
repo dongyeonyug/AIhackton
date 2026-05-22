@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>교수님 연구실</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        color: #641b37;
+        font-family: Inter, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+        background: linear-gradient(120deg, #fffaf2, #ffedf5);
+      }
+      button, input, textarea { font: inherit; }
+      button {
+        min-height: 44px;
+        border: 0;
+        border-radius: 8px;
+        padding: 0 16px;
+        background: linear-gradient(180deg, #d57398, #9f1d50);
+        color: #fff;
+        font-weight: 900;
+        cursor: pointer;
+      }
+      textarea, input {
+        width: 100%;
+        border: 1px solid rgba(218, 128, 154, .42);
+        border-radius: 8px;
+        padding: 12px;
+        background: rgba(255, 255, 255, .88);
+        color: #641b37;
+      }
+      textarea { min-height: 140px; resize: vertical; }
+
+      #home-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 20;
+        padding: clamp(24px, 5vw, 58px);
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        background: #fff6fb url("/assets/vn-hero.png") center / cover no-repeat;
+      }
+      #home-splash::after {
+        content: "";
+        position: absolute;
+        inset: 22px;
+        border: 2px solid rgba(255, 255, 255, .74);
+        box-shadow: inset 0 0 0 1px rgba(255, 122, 184, .22);
+        pointer-events: none;
+      }
+      #home-splash.is-hidden { display: none; }
+      .home-menu {
+        width: min(460px, 48vw);
+        margin-right: clamp(0px, 2vw, 36px);
+        align-self: end;
+        margin-bottom: clamp(12px, 4vh, 42px);
+        display: grid;
+        justify-items: center;
+        gap: 12px;
+        position: relative;
+        z-index: 1;
+      }
+      .home-title-image {
+        width: min(100%, 360px);
+        aspect-ratio: 3 / 2;
+        object-fit: contain;
+        mix-blend-mode: multiply;
+        filter: drop-shadow(0 16px 18px rgba(255, 87, 164, .24));
+      }
+      .home-buttons { width: min(300px, 100%); display: grid; }
+      .home-buttons button {
+        min-height: 58px;
+        border: 2px solid rgba(255, 255, 255, .9);
+        border-radius: 999px;
+        background: linear-gradient(180deg, #fff 0%, #ffd8e9 12%, #ff8fc0 50%, #f15d9d 100%);
+        font-size: clamp(20px, 2.4vw, 25px);
+        text-shadow: 0 2px 0 rgba(194, 48, 112, .42);
+        box-shadow: 0 3px 0 #d6498b, 0 10px 18px rgba(232, 89, 151, .22), inset 0 2px 0 rgba(255, 255, 255, .85);
+      }
+
+      .app-shell {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+      }
+      .sidebar {
+        min-height: 100vh;
+        padding: 28px 24px;
+        border-right: 1px solid rgba(194, 122, 86, .18);
+        background: linear-gradient(180deg, rgba(255, 250, 242, .96), rgba(255, 238, 230, .86));
+        box-shadow: 18px 0 46px rgba(128, 72, 38, .08);
+      }
+      .brand {
+        padding: 58px 4px 36px;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+      }
+      .brand-mark, .avatar {
+        width: 54px;
+        height: 54px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(180deg, #d56f94, #9e174e);
+        color: #fff;
+        font-size: 26px;
+        font-weight: 900;
+      }
+      .brand strong, .brand small { display: block; }
+      .brand strong { color: #7b173a; font-size: 22px; }
+      .brand small, .muted, small { color: #87576a; }
+      .nav-tabs { display: grid; gap: 12px; }
+      .nav-tabs button {
+        min-height: 56px;
+        border: 1px solid rgba(172, 103, 73, .22);
+        border-radius: 0;
+        background: rgba(255, 251, 244, .8);
+        color: #782843;
+        text-align: left;
+        font-size: 18px;
+      }
+      .nav-tabs button.active {
+        background: linear-gradient(90deg, rgba(255, 255, 255, .92), rgba(255, 219, 231, .86));
+        color: #a40f4a;
+        box-shadow: inset 0 0 0 1px rgba(224, 126, 156, .45), 0 10px 22px rgba(198, 74, 124, .1);
+      }
+      .trust-panel {
+        margin-top: 40px;
+        padding: 20px;
+        border: 1px solid rgba(225, 135, 157, .44);
+        background: rgba(255, 255, 255, .72);
+      }
+      .trust-row { display: flex; justify-content: space-between; align-items: end; }
+      .trust-row strong { font-size: 36px; color: #b11255; }
+      .trust-meter { height: 10px; margin: 14px 0; border-radius: 999px; background: #f2cdd9; overflow: hidden; }
+      .trust-meter span { display: block; width: 62%; height: 100%; background: linear-gradient(90deg, #f07a9d, #9e174e); }
+
+      main {
+        min-width: 0;
+        padding: 42px;
+        background: radial-gradient(circle at 70% 0%, rgba(255, 171, 193, .18), transparent 30%), linear-gradient(120deg, rgba(255, 251, 243, .94), rgba(255, 239, 230, .84));
+      }
+      .topbar {
+        margin-bottom: 36px;
+        padding: 34px 54px;
+        border: 1px solid rgba(225, 135, 157, .48);
+        border-radius: 16px;
+        background: rgba(255, 252, 247, .9);
+        box-shadow: 0 18px 40px rgba(142, 69, 46, .12);
+      }
+      .topbar p, .topbar h1 { margin: 0; }
+      .topbar p { color: #b11255; font-weight: 900; }
+      .topbar h1 {
+        margin-top: 10px;
+        color: #6d1234;
+        font-family: Georgia, "Noto Serif KR", serif;
+        font-size: clamp(34px, 4vw, 50px);
+      }
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(150px, 1fr));
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+      .summary-grid article, .panel, .assignment-card, .professor-card {
+        border: 1px solid rgba(225, 135, 157, .44);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, .86);
+        box-shadow: 0 18px 40px rgba(142, 69, 46, .1);
+      }
+      .summary-grid article { padding: 20px; }
+      .summary-grid span, .summary-grid small { display: block; }
+      .summary-grid strong { display: block; margin: 8px 0 3px; font-size: 34px; color: #b11255; }
+      .main-grid, .exam-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(320px, .8fr);
+        gap: 20px;
+      }
+      .panel { margin-bottom: 20px; padding: 20px; }
+      .panel-heading {
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      .panel-heading h2 {
+        margin: 0;
+        color: #6d1234;
+        font-family: Georgia, "Noto Serif KR", serif;
+      }
+      .text-button, .filters button {
+        background: #fff0f7;
+        color: #8b365f;
+      }
+      .filters { display: flex; gap: 8px; }
+      .filters button.active { background: #e94f9a; color: #fff; }
+      .assignment-list, .professor-grid, .exam-output { display: grid; gap: 14px; }
+      .assignment-card { padding: 18px; display: grid; gap: 10px; }
+      .assignment-top, .assignment-actions { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+      .assignment-card h3 { margin: 0; font-size: 17px; }
+      .d-day {
+        border-radius: 999px;
+        padding: 5px 10px;
+        background: #ffe3ef;
+        color: #e03e88;
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .assignment-actions a { color: #dd3f8d; font-weight: 900; text-decoration: none; }
+      .assignment-actions label { display: inline-flex; gap: 6px; align-items: center; color: #87576a; font-weight: 800; }
+      .professor-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+      .professor-card {
+        min-height: 300px;
+        padding: 26px;
+        display: grid;
+        align-content: center;
+        justify-items: center;
+        gap: 14px;
+        text-align: center;
+        color: #641b37;
+      }
+      .professor-card .avatar {
+        width: 86px;
+        height: 86px;
+        border: 3px double rgba(255, 229, 235, .82);
+        font-size: 44px;
+        box-shadow: 0 14px 24px rgba(149, 31, 79, .2);
+      }
+      .professor-card strong {
+        color: #6d1234;
+        font-family: Georgia, "Noto Serif KR", serif;
+        font-size: 24px;
+      }
+      .drop-zone {
+        min-height: 116px;
+        border: 1px dashed #d94f91;
+        border-radius: 8px;
+        background: #fff5fa;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 18px;
+        margin-bottom: 12px;
+        color: #b11255;
+        font-weight: 900;
+      }
+      .question-block {
+        border-left: 4px solid #e94f9a;
+        border-radius: 0 8px 8px 0;
+        background: #fff6fa;
+        padding: 14px;
+        white-space: pre-wrap;
+      }
+      @media (max-width: 900px) {
+        .app-shell, .summary-grid, .main-grid, .exam-layout { grid-template-columns: 1fr; }
+        .sidebar { min-height: auto; }
+        .home-menu { width: min(430px, 100%); margin: 0 0 18px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="home-splash">
+      <section class="home-menu">
+        <img class="home-title-image" src="/assets/favorite-title.png" alt="교수님이 나만 편애한다" />
+        <div class="home-buttons">
+          <button id="home-start" type="button">교수님 만나러 가기</button>
+        </div>
+      </section>
+    </div>
+    <div id="root"></div>
+    <script>
+      const state = {
+        view: "dashboard",
+        filter: "urgent",
+        assignments: [],
+        submitted: JSON.parse(localStorage.getItem("gyosu-submitted") || "{}"),
+        materialNotes: "",
+        examHints: "",
+        examOutput: []
+      };
+      const titles = {
+        dashboard: "오늘의 연구실",
+        professors: "교수님 캐릭터",
+        sim: "교수님 미연시",
+        exam: "예상 시험 문제 생성",
+        assignments: "과제 알림"
+      };
+      const navItems = [
+        ["dashboard", "홈"],
+        ["professors", "교수님"],
+        ["sim", "미연시"],
+        ["exam", "예상 문제"],
+        ["assignments", "과제"]
+      ];
+
+      const root = document.getElementById("root");
+      document.getElementById("home-start").addEventListener("click", () => {
+        document.getElementById("home-splash").classList.add("is-hidden");
+      });
+
+      fetch("/data/all_assignments.json")
+        .then((response) => response.json())
+        .then((items) => {
+          state.assignments = Array.isArray(items) ? items : [];
+          render();
+        })
+        .catch(() => render());
+
+      function daysLeft(date) {
+        if (!date) return Infinity;
+        return Math.ceil((new Date(date) - new Date()) / 86400000);
+      }
+      function idFor(item) {
+        return `${item.course || "course"}-${item.title}-${item.due_at || "none"}`;
+      }
+      function sortAssignments(items) {
+        return [...items].sort((a, b) => (a.due_at ? new Date(a.due_at).getTime() : Number.MAX_SAFE_INTEGER) - (b.due_at ? new Date(b.due_at).getTime() : Number.MAX_SAFE_INTEGER));
+      }
+      function dday(date) {
+        const left = daysLeft(date);
+        if (!Number.isFinite(left)) return "마감 미정";
+        if (left < 0) return `D+${Math.abs(left)}`;
+        if (left === 0) return "D-day";
+        return `D-${left}`;
+      }
+      function dateText(date) {
+        return date ? new Intl.DateTimeFormat("ko-KR", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Seoul" }).format(new Date(date)) : "마감일 없음";
+      }
+      function navigate(view) {
+        state.view = view;
+        if (view === "assignments") state.filter = "urgent";
+        render();
+      }
+      function openAssignments() {
+        state.filter = "urgent";
+        navigate("assignments");
+      }
+      function toggleSubmit(item, checked) {
+        state.submitted[idFor(item)] = checked;
+        localStorage.setItem("gyosu-submitted", JSON.stringify(state.submitted));
+        render();
+      }
+      function extractKeywords(text) {
+        return [...new Set(String(text).replace(/[^\p{L}\p{N}\s]/gu, " ").split(/\s+/).filter((word) => word.length >= 2))].slice(0, 12);
+      }
+      function generateExam() {
+        const keywords = extractKeywords(`${state.examHints}\n${state.materialNotes}`);
+        state.examOutput = [
+          `[객관식] ${keywords[0] || "핵심 개념"}의 설명으로 가장 적절한 것을 고르시오.`,
+          `[단답형] ${keywords[1] || "중요 키워드"}의 정의와 적용 조건을 쓰시오.`,
+          `[서술형] ${keywords[2] || "강의 주제"} 개념이 실제 사례나 논문 맥락에서 왜 중요한지 설명하시오.`,
+          `[핵심 요약] ${keywords.slice(0, 6).join(", ") || "자료와 시험 힌트를 입력하면 키워드가 나옵니다."}`
+        ];
+        render();
+      }
+      function render() {
+        const open = state.assignments.filter((item) => !state.submitted[idFor(item)]);
+        const urgent = open.filter((item) => daysLeft(item.due_at) >= 0 && daysLeft(item.due_at) <= 7);
+        const filtered = state.filter === "urgent" ? urgent : open;
+        root.innerHTML = `
+          <div class="app-shell">
+            <aside class="sidebar">
+              <div class="brand">
+                <span class="brand-mark">?</span>
+                <div><strong>교수님 연구실</strong><small>시험 대비 · 과제 알림 · 신뢰도 관리</small></div>
+              </div>
+              <nav class="nav-tabs">
+                ${navItems.map(([key, label]) => `<button class="${state.view === key ? "active" : ""}" data-view="${key}">${label}</button>`).join("")}
+              </nav>
+              <section class="trust-panel">
+                <div class="trust-row"><span>연구실 신뢰도</span><strong>62</strong></div>
+                <div class="trust-meter"><span></span></div>
+                <p class="muted">괜찮군. 이 루틴이면 연구실 문 앞까지 왔다.</p>
+              </section>
+            </aside>
+            <main>
+              <section class="topbar">
+                <p>${new Intl.DateTimeFormat("ko-KR", { dateStyle: "full" }).format(new Date())}</p>
+                <h1>${titles[state.view]}</h1>
+              </section>
+              ${renderView(urgent, open, filtered)}
+            </main>
+          </div>`;
+        document.querySelectorAll("[data-view]").forEach((button) => {
+          button.addEventListener("click", () => navigate(button.dataset.view));
+        });
+        document.querySelectorAll("[data-filter]").forEach((button) => {
+          button.addEventListener("click", () => {
+            state.filter = button.dataset.filter;
+            render();
+          });
+        });
+        document.querySelectorAll("[data-submit]").forEach((checkbox) => {
+          checkbox.addEventListener("change", () => toggleSubmit(state.assignments[Number(checkbox.dataset.submit)], checkbox.checked));
+        });
+        const allButton = document.querySelector("[data-open-assignments]");
+        if (allButton) allButton.addEventListener("click", openAssignments);
+        const material = document.getElementById("material-notes");
+        if (material) material.addEventListener("input", (event) => state.materialNotes = event.target.value);
+        const hints = document.getElementById("exam-hints");
+        if (hints) hints.addEventListener("input", (event) => state.examHints = event.target.value);
+        const generate = document.getElementById("generate-exam");
+        if (generate) generate.addEventListener("click", generateExam);
+      }
+      function renderView(urgent, open, filtered) {
+        if (state.view === "professors") return professorPage();
+        if (state.view === "sim") return `<section class="panel"><h2>교수님 미연시</h2><p class="muted">교수님 캐릭터를 선택하면 대화 이벤트가 시작됩니다.</p></section>`;
+        if (state.view === "exam") return examPage();
+        if (state.view === "assignments") return assignmentBoard(filtered);
+        return `
+          <div class="summary-grid">
+            <article><span>마감 임박</span><strong>${urgent.length}</strong><small>7일 이내 과제</small></article>
+            <article><span>미제출</span><strong>${open.length}</strong><small>제출 체크 전 과제</small></article>
+            <article><span>생성된 교수님</span><strong>2</strong><small>프로필 완성</small></article>
+          </div>
+          <div class="main-grid">
+            <section class="panel">
+              <div class="panel-heading"><h2>다가오는 과제</h2><button class="text-button" data-open-assignments>전체 보기</button></div>
+              ${assignmentList(sortAssignments(open).slice(0, 4))}
+            </section>
+            <section class="panel">
+              <div class="panel-heading"><h2>교수님 슬롯</h2><button class="text-button" data-view="professors">설정하기</button></div>
+              <div class="professor-grid">${professorCards(2)}</div>
+            </section>
+          </div>`;
+      }
+      function professorPage() {
+        return `<div class="professor-grid">${professorCards(6)}</div>`;
+      }
+      function professorCards(count) {
+        return Array.from({ length: count }, () => `
+          <button class="professor-card">
+            <span class="avatar">?</span>
+            <strong>교수님 설정</strong>
+            <span class="muted">성격, 말투, 힌트 방식을 선택하세요.</span>
+          </button>`).join("");
+      }
+      function assignmentBoard(items) {
+        return `
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>D-day 과제 보드</h2>
+              <div class="filters">
+                <button class="${state.filter === "urgent" ? "active" : ""}" data-filter="urgent">마감 임박</button>
+                <button class="${state.filter === "open" ? "active" : ""}" data-filter="open">미제출</button>
+              </div>
+            </div>
+            ${assignmentList(sortAssignments(items))}
+          </section>`;
+      }
+      function assignmentList(items) {
+        if (!items.length) return `<p class="muted">조건에 맞는 과제가 없습니다.</p>`;
+        return `<div class="assignment-list">${items.map((item) => {
+          const index = state.assignments.indexOf(item);
+          const checked = !!state.submitted[idFor(item)];
+          return `
+            <article class="assignment-card">
+              <div class="assignment-top">
+                <div><h3>${item.title || "제목 없음"}</h3><small>${item.course || "강의명 없음"} · ${item.professor || "교수명 없음"}</small></div>
+                <span class="d-day">${checked ? "제출 완료" : dday(item.due_at)}</span>
+              </div>
+              <small>${dateText(item.due_at)} · ${item.points ?? "-"}점</small>
+              <p class="muted">${daysLeft(item.due_at) <= 7 ? "마감이 임박했습니다. 지금 제출 칸을 열어두는 편이 좋습니다." : "루틴 안에 넣어두면 신뢰도가 안정적으로 올라갑니다."}</p>
+              <div class="assignment-actions">
+                <a href="${item.url || "#"}" target="_blank" rel="noreferrer">LMS 열기</a>
+                <label><input type="checkbox" ${checked ? "checked" : ""} data-submit="${index}" /> 제출</label>
+              </div>
+            </article>`;
+        }).join("")}</div>`;
+      }
+      function examPage() {
+        return `
+          <div class="exam-layout">
+            <section class="panel">
+              <div class="panel-heading"><h2>자료 업로드</h2></div>
+              <p class="muted">PDF, 논문 텍스트, 강의 자료, 족보를 넣으면 키워드 기반 문제를 만듭니다.</p>
+              <label class="drop-zone">자료 파일 선택<input type="file" multiple hidden /></label>
+              <textarea id="material-notes" placeholder="강의 자료나 논문 핵심 내용을 붙여넣기">${state.materialNotes}</textarea>
+            </section>
+            <section class="panel">
+              <div class="panel-heading"><h2>시험 힌트</h2></div>
+              <p class="muted">교수님이 강조한 범위, 출제 스타일, 꼭 나올 것 같은 키워드를 적어두면 자료와 함께 문제 생성에 우선 반영합니다.</p>
+              <textarea id="exam-hints" placeholder="예: 3장 정의 비교, 계산 문제 1개, 교수님이 강조한 반례, 서술형 예상 포인트">${state.examHints}</textarea>
+            </section>
+            <section class="panel">
+              <div class="panel-heading"><h2>문제 생성</h2></div>
+              <button id="generate-exam">예상 문제 생성</button>
+            </section>
+          </div>
+          <section class="panel">
+            <div class="panel-heading"><h2>생성 결과</h2></div>
+            <div class="exam-output">${state.examOutput.map((item) => `<div class="question-block">${item}</div>`).join("") || `<p class="muted">자료와 시험 힌트를 입력한 뒤 생성하세요.</p>`}</div>
+          </section>`;
+      }
+    </script>
+  </body>
+</html>
